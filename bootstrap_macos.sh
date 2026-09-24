@@ -4,7 +4,7 @@
 #
 #   1. Installs Homebrew (or updates it if already present).
 #   2. Installs VirtualBox with Homebrew.
-#   3. Installs Vagrant from HashiCorp's Homebrew tap.
+#   3. Installs Vagrant with Homebrew.
 #
 # Re-running the script upgrades anything that is already installed.
 #
@@ -61,7 +61,7 @@ main() {
     brew_install --cask virtualbox
 
     # --- Vagrant -------------------------------------------------------------
-    # Homebrew core dropped Vagrant after its license change; use HashiCorp's tap.
+    # Alternative: install from HashiCorp's tap instead of the Homebrew cask.
     # brew tap hashicorp/tap
     # brew_install --formula hashicorp/tap/hashicorp-vagrant
     brew_install --cask vagrant
