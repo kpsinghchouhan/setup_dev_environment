@@ -1,0 +1,4 @@
+---
+# Ansible connection variables for Linux hosts
+ansible_connection: local
+ansible_user: vagrant

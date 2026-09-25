@@ -1,0 +1,4 @@
+---
+# Ansible connection variables for all hosts
+ansible_become_method: sudo
+ansible_gather_facts: true

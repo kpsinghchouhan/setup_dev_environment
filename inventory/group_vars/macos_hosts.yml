@@ -1,0 +1,4 @@
+---
+# Ansible connection variables for macOS hosts
+ansible_connection: ssh
+ansible_user: kpsingh
