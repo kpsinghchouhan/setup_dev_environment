@@ -2,6 +2,5 @@
 - name: Setup Development Environment
   hosts: all
 
-  tasks:
-    - name: Test connectivity to all hosts
-      ansible.builtin.ping:
+  roles:
+    - kpsinghchouhan.linux_developer_roles.git

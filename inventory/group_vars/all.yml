@@ -2,3 +2,7 @@
 # Ansible connection variables for all hosts
 ansible_become_method: sudo
 ansible_gather_facts: true
+
+# Git variables
+git_user_name: 'Krishana Pal Singh Chouhan'
+git_user_email: 'kpsingh.chouhan@gmail.com'
