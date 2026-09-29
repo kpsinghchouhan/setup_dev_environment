@@ -2,5 +2,31 @@
 - name: Setup Development Environment
   hosts: all
 
-  roles:
-    - kpsinghchouhan.linux_developer_roles.git
+  pre_tasks:
+    - name: Fail on unsupported operating systems
+      ansible.builtin.fail:
+        msg: "Unsupported OS: {{ ansible_facts['distribution'] }}. Only Ubuntu and macOS are supported."
+      when: ansible_facts['distribution'] not in ['Ubuntu', 'MacOSX']
+
+    - name: Update apt cache on Ubuntu
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+      become: true
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Update Homebrew on macOS
+      community.general.homebrew:
+        update_homebrew: true
+      when: ansible_facts['distribution'] == 'MacOSX'
+
+  tasks:
+    - name: Include role to install Git
+      ansible.builtin.include_role:
+        name: kpsinghchouhan.linux_developer_roles.git
+      when: install_git | default(true)
+
+  post_tasks:
+    - name: Print completion message
+      ansible.builtin.debug:
+        msg: "Development environment setup completed on {{ inventory_hostname }} ({{ ansible_facts['distribution'] }})."
