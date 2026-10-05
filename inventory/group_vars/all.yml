@@ -3,6 +3,12 @@
 ansible_become_method: sudo
 ansible_gather_facts: true
 
+# Roles to be included for all hosts
+install_git: true
+install_gh: true
+install_starship: true
+install_claude: true
+
 # Git variables
 git_user_name: 'Krishana Pal Singh Chouhan'
 git_user_email: 'kpsingh.chouhan@gmail.com'
