@@ -24,92 +24,162 @@
     - name: Include role to install Git
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.git
+        apply:
+          tags:
+            - git
       when: install_git | default(false)
+      tags:
+        - git
 
     - name: Include role to install GitHub CLI
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.gh
+        apply:
+          tags:
+            - gh
       when: install_gh | default(false)
+      tags:
+        - gh
 
     - name: Include role to install Nerd fonts
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.nerd_font
+        apply:
+          tags:
+            - nerd_font
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_nerd_font | default(false)
+      tags:
+        - nerd_font
 
     - name: Include role to install Starship terminal prompt
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.starship
+        apply:
+          tags:
+            - starship
       when: install_starship | default(false)
+      tags:
+        - starship
 
     - name: Include role to install Claude
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.claude
+        apply:
+          tags:
+            - claude
       when: install_claude | default(false)
+      tags:
+        - claude
 
     - name: Include role to install Adobe Acrobat Reader on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.adobe_acrobat_reader
+        apply:
+          tags:
+            - adobe_acrobat_reader
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_adobe_acrobat_reader | default(false)
+      tags:
+        - adobe_acrobat_reader
 
     - name: Include role to install Ghostty terminal on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.ghostty
+        apply:
+          tags:
+            - ghostty
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_ghostty | default(false)
+      tags:
+        - ghostty
 
     - name: Include role to install Google Chrome on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.google_chrome
+        apply:
+          tags:
+            - google_chrome
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_google_chrome | default(false)
+      tags:
+        - google_chrome
 
     - name: Include role to install Google Drive on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.google_drive
+        apply:
+          tags:
+            - google_drive
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_google_drive | default(false)
+      tags:
+        - google_drive
 
     - name: Include role to install Visual Studio Code on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.visual_studio_code
+        apply:
+          tags:
+            - visual_studio_code
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_visual_studio_code | default(false)
+      tags:
+        - visual_studio_code
 
     - name: Include role to install Zed editor on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.zed
+        apply:
+          tags:
+            - zed
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_zed | default(false)
+      tags:
+        - zed
 
     - name: Include role to install Notion on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.notion
+        apply:
+          tags:
+            - notion
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_notion | default(false)
+      tags:
+        - notion
 
     - name: Include role to install VirtualBox on macOS
       ansible.builtin.include_role:
         name: kpsinghchouhan.linux_developer_roles.virtualbox
+        apply:
+          tags:
+            - virtualbox
       when:
         - ansible_facts['distribution'] == 'MacOSX'
         - install_virtualbox | default(false)
+      tags:
+        - virtualbox
 
-    - name: Include role to install Vagrant on macOS
+    - name: Include role to install HashiCorp Vagrant on macOS
       ansible.builtin.include_role:
-        name: kpsinghchouhan.linux_developer_roles.vagrant
+        name: kpsinghchouhan.linux_developer_roles.hashicorp_vagrant
+        apply:
+          tags:
+            - hashicorp_vagrant
       when:
         - ansible_facts['distribution'] == 'MacOSX'
-        - install_vagrant | default(false)
+        - install_hashicorp_vagrant | default(false)
+      tags:
+        - hashicorp_vagrant
 
   post_tasks:
     - name: Print completion message

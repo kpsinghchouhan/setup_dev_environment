@@ -13,4 +13,4 @@ install_visual_studio_code: true
 install_zed: true
 install_notion: true
 install_virtualbox: true
-install_vagrant: true
+install_hashicorp_vagrant: true
