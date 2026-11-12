@@ -7,6 +7,8 @@
       ansible.builtin.fail:
         msg: "Unsupported OS: {{ ansible_facts['distribution'] }}. Only Ubuntu and macOS are supported."
       when: ansible_facts['distribution'] not in ['Ubuntu', 'MacOSX']
+      tags:
+        - always
 
     - name: Update apt cache on Ubuntu
       ansible.builtin.apt:
@@ -14,11 +16,15 @@
         cache_valid_time: 3600
       become: true
       when: ansible_facts['distribution'] == 'Ubuntu'
+      tags:
+        - always
 
     - name: Update Homebrew on macOS
       community.general.homebrew:
         update_homebrew: true
       when: ansible_facts['distribution'] == 'MacOSX'
+      tags:
+        - always
 
   tasks:
     - name: Include role to install Git
