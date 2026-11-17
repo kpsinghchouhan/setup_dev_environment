@@ -39,17 +39,18 @@ install_pkg() {
     fi
 }
 
-# Some dependencies may lack prebuilt wheels for newer Pythons and need a C
-# compiler to build from source.
+# Some dependencies may lack prebuilt wheels for newer Pythons (e.g.
+# onigurumacffi on aarch64) and need a C compiler plus library headers to
+# build from source.
 install_build_tools() {
     if command -v apt-get >/dev/null; then
-        install_pkg build-essential
+        install_pkg build-essential libonig-dev
     elif command -v dnf >/dev/null || command -v yum >/dev/null || command -v zypper >/dev/null; then
-        install_pkg gcc make
+        install_pkg gcc make oniguruma-devel
     elif command -v pacman >/dev/null; then
-        install_pkg base-devel
+        install_pkg base-devel oniguruma
     elif command -v apk >/dev/null; then
-        install_pkg build-base
+        install_pkg build-base oniguruma-dev
     else
         die "No supported package manager found; please install a C compiler"
     fi
@@ -65,7 +66,7 @@ main() {
         install_pkg curl ca-certificates
     fi
 
-    if ! command -v cc >/dev/null; then
+    if ! command -v cc >/dev/null || [[ ! -f /usr/include/oniguruma.h ]]; then
         log "Installing C build tools"
         install_build_tools
     fi
