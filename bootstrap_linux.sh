@@ -2,7 +2,8 @@
 #
 # Bootstrap a Linux machine for Ansible development.
 #
-#   1. Installs uv and uses it to install CPython $PYTHON_VERSION (default 3.14).
+#   1. Installs uv (adding ~/.local/bin to PATH in ~/.bashrc) and uses it to
+#      install CPython $PYTHON_VERSION (default 3.14).
 #   2. Creates ~/.ansible-dev-tools with a virtual environment in ~/.ansible-dev-tools/.venv.
 #   3. Activates the venv and installs ansible-dev-tools into it.
 #
@@ -81,6 +82,14 @@ main() {
         curl -LsSf https://astral.sh/uv/install.sh | sh
     fi
     command -v uv >/dev/null || die "uv installation failed"
+
+    # Persist ~/.local/bin on PATH for future shells (idempotent).
+    # shellcheck disable=SC2016  # $HOME/$PATH must expand when .bashrc runs
+    local path_line='export PATH="$HOME/.local/bin:$PATH"'
+    if ! grep -qxF "$path_line" "$HOME/.bashrc" 2>/dev/null; then
+        log "Adding \$HOME/.local/bin to PATH in ~/.bashrc"
+        printf '\n# Added by bootstrap_linux.sh\n%s\n' "$path_line" >> "$HOME/.bashrc"
+    fi
 
     # --- Python --------------------------------------------------------------
     log "Installing Python $PYTHON_VERSION"
