@@ -2,16 +2,18 @@
 #
 # Bootstrap a Linux machine for Ansible development.
 #
-#   1. Installs uv and uses it to install the latest stable CPython.
+#   1. Installs uv and uses it to install CPython $PYTHON_VERSION (default 3.14).
 #   2. Creates ~/.ansible-dev-tools with a virtual environment in ~/.ansible-dev-tools/.venv.
 #   3. Activates the venv and installs ansible-dev-tools into it.
 #
 # Usage:
 #   ./bootstrap_linux.sh          # run; prints how to activate the venv afterwards
 #   source ./bootstrap_linux.sh   # run and leave the venv active in the current shell
+#   PYTHON_VERSION=3.13 ./bootstrap_linux.sh   # use a different Python version
 
 ADT_DIR="$HOME/.ansible-dev-tools"
 VENV_DIR="$ADT_DIR/.venv"
+PYTHON_VERSION="${PYTHON_VERSION:-3.14}"
 
 log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 die() { printf '\033[1;31mERROR:\033[0m %s\n' "$*" >&2; exit 1; }
@@ -59,11 +61,11 @@ main() {
     command -v uv >/dev/null || die "uv installation failed"
 
     # --- Python --------------------------------------------------------------
-    log "Installing the latest Python"
-    uv python install --default || uv python install
+    log "Installing Python $PYTHON_VERSION"
+    uv python install --default "$PYTHON_VERSION" || uv python install "$PYTHON_VERSION"
     local python_bin
     # --system ignores any active/nearby venv so we get the real interpreter.
-    python_bin="$(uv python find --system --no-project --managed-python)"
+    python_bin="$(uv python find --system --no-project --managed-python "$PYTHON_VERSION")"
     log "Using Python $(python_version "$python_bin") at $python_bin"
 
     # --- Virtual environment -------------------------------------------------
