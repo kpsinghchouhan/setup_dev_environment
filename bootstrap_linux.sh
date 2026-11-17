@@ -39,6 +39,22 @@ install_pkg() {
     fi
 }
 
+# Some dependencies may lack prebuilt wheels for newer Pythons and need a C
+# compiler to build from source.
+install_build_tools() {
+    if command -v apt-get >/dev/null; then
+        install_pkg build-essential
+    elif command -v dnf >/dev/null || command -v yum >/dev/null || command -v zypper >/dev/null; then
+        install_pkg gcc make
+    elif command -v pacman >/dev/null; then
+        install_pkg base-devel
+    elif command -v apk >/dev/null; then
+        install_pkg build-base
+    else
+        die "No supported package manager found; please install a C compiler"
+    fi
+}
+
 python_version() { "$1" -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'; }
 
 main() {
@@ -47,6 +63,11 @@ main() {
     if ! command -v curl >/dev/null; then
         log "Installing curl"
         install_pkg curl ca-certificates
+    fi
+
+    if ! command -v cc >/dev/null; then
+        log "Installing C build tools"
+        install_build_tools
     fi
 
     # --- uv ------------------------------------------------------------------
