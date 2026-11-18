@@ -85,6 +85,13 @@ main() {
         install_build_tools
     fi
 
+    # Ansible's apt modules (e.g. deb822_repository) need python3-debian for
+    # the system interpreter set as ansible_python_interpreter.
+    if command -v apt-get >/dev/null && ! /usr/bin/python3 -c 'import debian' 2>/dev/null; then
+        log "Installing python3-debian"
+        install_pkg python3-debian
+    fi
+
     # --- uv ------------------------------------------------------------------
     export PATH="$HOME/.local/bin:$PATH"
     if command -v uv >/dev/null; then

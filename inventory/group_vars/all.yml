@@ -1,6 +1,7 @@
 ---
 # Ansible connection variables for all hosts
 ansible_become_method: sudo
+ansible_python_interpreter: /usr/bin/python3
 
 # Roles to be included for all hosts
 install_git: true
