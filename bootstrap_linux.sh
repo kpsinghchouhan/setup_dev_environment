@@ -46,7 +46,7 @@ install_pkg() {
 # build from source.
 install_build_tools() {
     if command -v apt-get >/dev/null; then
-        install_pkg build-essential libonig-dev
+        install_pkg build-essential libonig-dev python3-debian
     elif command -v dnf >/dev/null || command -v yum >/dev/null || command -v zypper >/dev/null; then
         install_pkg gcc make oniguruma-devel
     elif command -v pacman >/dev/null; then
