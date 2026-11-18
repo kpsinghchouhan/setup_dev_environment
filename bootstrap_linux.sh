@@ -2,6 +2,7 @@
 #
 # Bootstrap a Linux machine for Ansible development.
 #
+#   0. Sets TERM=xterm-256color in ~/.bashrc.
 #   1. Installs uv (adding ~/.local/bin to PATH in ~/.bashrc) and uses it to
 #      install CPython $PYTHON_VERSION (default 3.14).
 #   2. Creates ~/.ansible-dev-tools with a virtual environment in ~/.ansible-dev-tools/.venv.
@@ -57,10 +58,22 @@ install_build_tools() {
     fi
 }
 
+# Append a line to ~/.bashrc unless that exact line is already there.
+add_to_bashrc() {
+    local line="$1"
+    if ! grep -qxF "$line" "$HOME/.bashrc" 2>/dev/null; then
+        log "Adding to ~/.bashrc: $line"
+        printf '\n# Added by bootstrap_linux.sh\n%s\n' "$line" >> "$HOME/.bashrc"
+    fi
+}
+
 python_version() { "$1" -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'; }
 
 main() {
     [[ $EUID -eq 0 ]] && die "Run this script as a regular user, not root."
+
+    # --- Shell settings ------------------------------------------------------
+    add_to_bashrc 'export TERM=xterm-256color'
 
     if ! command -v curl >/dev/null; then
         log "Installing curl"
@@ -83,13 +96,9 @@ main() {
     fi
     command -v uv >/dev/null || die "uv installation failed"
 
-    # Persist ~/.local/bin on PATH for future shells (idempotent).
+    # Persist ~/.local/bin on PATH for future shells.
     # shellcheck disable=SC2016  # $HOME/$PATH must expand when .bashrc runs
-    local path_line='export PATH="$HOME/.local/bin:$PATH"'
-    if ! grep -qxF "$path_line" "$HOME/.bashrc" 2>/dev/null; then
-        log "Adding \$HOME/.local/bin to PATH in ~/.bashrc"
-        printf '\n# Added by bootstrap_linux.sh\n%s\n' "$path_line" >> "$HOME/.bashrc"
-    fi
+    add_to_bashrc 'export PATH="$HOME/.local/bin:$PATH"'
 
     # --- Python --------------------------------------------------------------
     log "Installing Python $PYTHON_VERSION"
