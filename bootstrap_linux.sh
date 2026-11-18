@@ -46,7 +46,7 @@ install_pkg() {
 # build from source.
 install_build_tools() {
     if command -v apt-get >/dev/null; then
-        install_pkg build-essential libonig-dev python3-debian
+        install_pkg build-essential libonig-dev
     elif command -v dnf >/dev/null || command -v yum >/dev/null || command -v zypper >/dev/null; then
         install_pkg gcc make oniguruma-devel
     elif command -v pacman >/dev/null; then
@@ -83,6 +83,13 @@ main() {
     if ! command -v cc >/dev/null || [[ ! -f /usr/include/oniguruma.h ]]; then
         log "Installing C build tools"
         install_build_tools
+    fi
+
+    # Ansible's apt modules (e.g. deb822_repository) need python3-debian for
+    # the system interpreter set as ansible_python_interpreter.
+    if command -v apt-get >/dev/null && ! /usr/bin/python3 -c 'import debian' 2>/dev/null; then
+        log "Installing python3-debian"
+        install_pkg python3-debian
     fi
 
     # --- uv ------------------------------------------------------------------
