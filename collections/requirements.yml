@@ -3,6 +3,6 @@ collections:
   - name: community.general
     version: ">=13.0.0"
 
-  - name: https://github.com/kpsinghchouhan/linux_developer_roles
+  - name: https://github.com/kpsinghchouhan/developer_roles
     type: git
     version: main
