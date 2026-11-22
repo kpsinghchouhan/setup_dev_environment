@@ -2,7 +2,7 @@
 
 An Ansible playbook that configures Ubuntu and macOS machines for software development.
 It installs and configures developer tools and desktop apps using roles from the
-[`kpsinghchouhan.linux_developer_roles`](https://github.com/kpsinghchouhan/linux_developer_roles) collection.
+[`kpsinghchouhan.developer_roles`](https://github.com/kpsinghchouhan/developer_roles) collection.
 
 ## Table of contents
 
